@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gif hub - details</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="icon" th:href="@{/favicon.png}" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+    <link rel="stylesheet" th:href="@{/vendor/materialize/css/materialize.css}" />
+    <link rel="stylesheet" th:href="@{/app.css}" />
+</head>
+<body>
+<div class="navbar-fixed">
+    <nav>
+        <div class="container">
+            <a th:href="@{/}" class="brand-logo">gif<span>.</span>hub</a>
+            <a href="#" data-activities="mobile-nav" class="button-collapse right"><i class="far fa-caret-square-down"></i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a th:href="@{/}">Explore</a></li>
+                <li><a th:href="@{/categories}">Categories</a></li>
+                <li><a th:href="@{/favorites}">Favorites</a></li>
+            </ul>
+            <ul id="mobile-nav" class="side-nav">
+                <li><a th:href="@{/}">Explore</a></li>
+                <li><a th:href="@{/categories}">Categories</a></li>
+                <li><a th:href="@{/favorites}">Favorites</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <form th:action="@{/gif/{name}/updateCategory(name=${editedGif.getName()})}" method="post" th:object="${editedGif}">
+                <div class="input-field col s12">
+                    <select class="input-field col s12" id="category" th:field="*{categoryId}" style="display: block; top: 25px;">
+                        <option th:each="categorie : ${categories}"
+                                th:value="${categorie.id}" class="dropdown-item"><a th:text="${categorie.name}" /></option>
+                    </select>
+                    <label>Category:</label>
+                </div>
+                <div class="">
+                    <input class="btn btn-warning" type="submit" value="Save" style="position: absolute; bottom: 2px;">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="gif-detail container">
+    <div class="frame row">
+        <div class="col s12">
+            <img th:src="${editedGif.getUrl()}" />
+            <a th:href="${editedGif.getDetailsUrl()} + '/favorite?r=details'" th:class="(${editedGif.favorite} ? 'un' : '') + 'mark favorite'"></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 l2">
+            <input type="text" th:field="${editedGif.name}" disabled>
+        </div>
+        <form th:action="@{/gif/{name}(name=${editedGif.name})}" th:object="${editedGif}" method="post">
+            <div class="col s8 l3">
+                <input type="text" th:field="*{tag}" style="text-align: center;">
+            </div>
+            <div class="col s4 l1">
+                <input type="submit" value="Change" style="margin: 15px;">
+            </div>
+        </form>
+        <div class="col s12 l6">
+            <p id="copy-info" class="copy-info-success"></p>
+            <div class="share">
+                <a id="copy-url" class="btn right" href="#copy-info" onclick="copy()">Copy</a>
+                <span id="copy-url-text" th:text="'http://gif.fy/' + ${editedGif.name}">URL</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/8158f700d3.js" crossorigin="anonymous"></script>
+<script th:src="@{/vendor/jquery/jquery-1.11.3.js}"></script>
+<script th:src="@{/vendor/materialize/js/materialize.js}"></script>
+<script th:src="@{/app.js}"></script>
+<script>
+    function copy() {
+        var url = new URL(window.location.href);
+        var el = document.createElement('textarea');
+        el.value = url;
+        el.setAttribute('readonly', '');
+        el.style = {position: 'absolute', left: '-9999px'};
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+
+        document.getElementById('copy-info').innerHTML = 'Skopiowano do schowka.';
+    }
+</script>
+</body>
+</html>
