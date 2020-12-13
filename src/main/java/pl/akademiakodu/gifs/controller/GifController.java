@@ -8,6 +8,7 @@ import pl.akademiakodu.gifs.model.Category;
 import pl.akademiakodu.gifs.model.Gif;
 import pl.akademiakodu.gifs.service.CategoryService;
 import pl.akademiakodu.gifs.service.GifService;
+import pl.akademiakodu.gifs.service.StorageService;
 
 import java.util.List;
 
@@ -18,12 +19,14 @@ import java.util.List;
 public class GifController {
     private GifService gifService;
     private CategoryService categoryService;
+    private StorageService storageService;
 
     //@Autowired tworzy nowy obiekt zamista słow new GifService().
     @Autowired
-    public GifController(GifService gifService, CategoryService categoryService) {
+    public GifController(GifService gifService, CategoryService categoryService, StorageService storageService) {
         this.gifService = gifService;
         this.categoryService = categoryService;
+        this.storageService = storageService;
     }
 
     @GetMapping("/")
@@ -45,18 +48,14 @@ public class GifController {
     }
 
     @PostMapping("/gif/{name}")
-    public String changeTag(@ModelAttribute Gif editedGif, @PathVariable String name) {
-        Gif gif = gifService.findGifByName(name);
-        //gif.setTag(editedGif.getTag());
-        gifService.changeTag(gif, editedGif.getTag());
+    public String changeTag(@ModelAttribute Gif editedGif) {
+        gifService.changeTag(editedGif);
         return "redirect:/gif/{name}";
     }
 
     @PostMapping("/gif/{name}/updateCategory")
-    public String changeCategory(@ModelAttribute Gif editedGif, @PathVariable String name) {
-        Gif gif = gifService.findGifByName(name);
-        gif.setCategoryId(editedGif.getCategoryId());
-        gifService.changeCategory(gif);
+    public String changeCategory(@ModelAttribute Gif editedGif) {
+        gifService.changeCategory(editedGif);
 
         //gdyby operować na {id} a nie na {name}, to wyglądało by to tak:
         //gifService.changeCategory(editedGif);
@@ -82,4 +81,6 @@ public class GifController {
         model.addAttribute("favoritesGifs", gifService.findFavorites());
         return "favorites";
     }
+
+
 }

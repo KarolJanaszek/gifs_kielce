@@ -38,9 +38,7 @@ public class GifServiceImpl implements GifService {
     }
 
     @Override
-    public void changeTag(Gif gif, String tag) {
-        gif.setTag(tag);
-
+    public void changeTag(Gif gif) {
         gif.setFavorite(null);
         gif.setCategoryId(null);
 
