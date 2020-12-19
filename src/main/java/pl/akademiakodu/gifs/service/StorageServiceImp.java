@@ -1,42 +1,33 @@
 package pl.akademiakodu.gifs.service;
 
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import pl.akademiakodu.gifs.exception.FileStorageException;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 @Service
 public class StorageServiceImp implements StorageService {
 
-    @Override
-    public void init() {
+    @Value("${app.upload.dir:${user.home}}")
+    public String uploadDir;
 
-    }
+    public void uploadFile(MultipartFile file) {
 
-    @Override
-    public void store(MultipartFile file) {
-
-    }
-
-    @Override
-    public Stream<Path> loadAll() {
-        return null;
-    }
-
-    @Override
-    public Path load(String filename) {
-        return null;
-    }
-
-    @Override
-    public Resource loadAsResource(String filename) {
-        return null;
-    }
-
-    @Override
-    public void deleteAll() {
-
+        try {
+            Path copyLocation = Paths
+                    .get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new FileStorageException("Could not store file " + file.getOriginalFilename()
+                    + ". Please try again!");
+        }
     }
 }

@@ -36,7 +36,6 @@
     <div class="row">
         <div class="col s12">
             <form th:action="@{/gif/{name}/updateCategory(name=${editedGif.getName()})}" method="post" th:object="${editedGif}">
-                <input type="text" th:field="*{id}" class="" readonly>
                 <div class="input-field col s12">
                     <select class="input-field col s12" id="category" th:field="*{categoryId}" style="display: block; top: 25px;">
                         <option th:each="categorie : ${categories}"
@@ -63,7 +62,6 @@
             <input type="text" th:field="${editedGif.name}" disabled>
         </div>
         <form th:action="@{/gif/{name}(name=${editedGif.name})}" th:object="${editedGif}" method="post">
-            <input type="text" th:field="*{id}" class="" readonly>
             <div class="col s8 l3">
                 <input type="text" th:field="*{tag}" style="text-align: center;">
             </div>
@@ -77,6 +75,7 @@
                 <a id="copy-url" class="btn right" href="#copy-info" onclick="copy()">Copy</a>
                 <span id="copy-url-text" th:text="'http://gif.fy/' + ${editedGif.name}">URL</span>
             </div>
+            <a th:href="@{/gif/{name}/delete(name=${editedGif.name})}"><img th:src="@{/img/delete.png}" class="delete-btn"></a>
         </div>
     </div>
 </div>

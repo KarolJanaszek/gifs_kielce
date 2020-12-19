@@ -1,14 +1,10 @@
 package pl.akademiakodu.gifs.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Repository;
 import pl.akademiakodu.gifs.model.Gif;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository

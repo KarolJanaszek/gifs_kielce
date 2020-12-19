@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import pl.akademiakodu.gifs.model.Gif;
 import pl.akademiakodu.gifs.repository.GifDao;
 
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 public class GifServiceImpl implements GifService {
 
     private GifDao gifDao;
+    private StorageService storageService;
 
     @Autowired
-    public GifServiceImpl(GifDao gifDao) {
+    public GifServiceImpl(GifDao gifDao, StorageService storageService) {
         this.gifDao = gifDao;
+        this.storageService = storageService;
     }
 
     @Override
@@ -58,6 +61,19 @@ public class GifServiceImpl implements GifService {
     @Override
     public List<Gif> findFavorites() {
         return getGifs().stream().filter(Gif::isFavorite).collect(Collectors.toList());
+    }
+
+    @Override
+    public void addGif(MultipartFile file, Long categoryId) {
+        String name = file.getOriginalFilename().substring(0, file.getOriginalFilename().indexOf('.'));
+        Gif newGif = new Gif(name, null, false, categoryId);
+        storageService.uploadFile(file);
+        gifDao.createGif(newGif);
+    }
+
+    @Override
+    public void deleteGif(Long id) {
+        gifDao.deleteGif(id);
     }
 
     @Override

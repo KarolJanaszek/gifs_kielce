@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gif hub</title>
+    <title>Gif hub - error</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
@@ -23,58 +23,26 @@
             <a th:href="@{/}" class="brand-logo">gif<span>.</span>hub</a>
             <a href="#" data-activities="mobile-nav" class="button-collapse right"><i class="far fa-caret-square-down"></i></a>
             <ul class="right hide-on-med-and-down">
-                <li class="active"><a th:href="@{/}">Explore</a></li>
+                <li class=""><a th:href="@{/}">Explore</a></li>
                 <li><a th:href="@{/categories}">Categories</a></li>
                 <li><a th:href="@{/favorites}">Favorites</a></li>
             </ul>
             <ul id="mobile-nav" class="side-nav">
-                <li class="active"><a th:href="@{/}">Explore</a></li>
+                <li class=""><a th:href="@{/}">Explore</a></li>
                 <li><a th:href="@{/categories}">Categories</a></li>
                 <li><a th:href="@{/favorites}">Favorites</a></li>
             </ul>
         </div>
     </nav>
 </div>
-<div class="search-bar container">
-    <div class="row">
-        <div class="col col-12">
-            <form action="#" method="get">
-                <div class="input-field">
-                    <input name="q" type="search" placeholder="Type name here..." required="required" autocomplete="off" />
-                    <i class="material-icons">search</i>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+
 <div class="gifs container">
     <div class="row">
         <div class="col col-12">
-            <form method="post" th:action="@{/}" enctype="multipart/form-data" class="custom-file">
-
-                <input type="file" name="file" class="btn btn-light" />
-
-                <select class="input-field col s12" id="category" name="categoryId" style="display: block; background-color: #26a69a;">
-                    <option th:each="categorie : ${categories}"
-                            th:value="${categorie.id}" class="dropdown-item"><a th:text="${categorie.name}" /></option>
-                </select>
-
-                <button type="submit" class="btn btn-primary" style="display: block;">Add</button>
-            </form>
-            <hr/>
+            <h1>Error</h1>
             <div th:if="${message}">
-                <h4 th:text="${message}" th:class="${success ? 'succeed' : 'failed'}" />
+                <h2 th:text="${message}"/>
             </div>
-        </div>
-    </div>
-</div>
-<div class="gifs container">
-    <div class="row">
-        <div th:each="gif : ${gifs}" class="col col-4">
-            <a th:href="${gif.getDetailsUrl()}">
-                <img th:src="${gif.getUrl()}">
-                <a th:href="${gif.getDetailsUrl()} + '/favorite'" th:class="(${gif.favorite} ? 'un' : '') + 'mark favorite'"></a>
-            </a>
         </div>
     </div>
 </div>
