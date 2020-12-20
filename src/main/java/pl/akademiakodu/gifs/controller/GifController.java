@@ -10,7 +10,7 @@ import pl.akademiakodu.gifs.model.Category;
 import pl.akademiakodu.gifs.model.Gif;
 import pl.akademiakodu.gifs.service.CategoryService;
 import pl.akademiakodu.gifs.service.GifService;
-import pl.akademiakodu.gifs.service.StorageService;
+
 
 import java.util.List;
 
@@ -46,7 +46,8 @@ public class GifController {
     }
 
     @PostMapping("/")
-    public String addGif(@RequestParam("file") MultipartFile file, @RequestParam(value = "categoryId", defaultValue = "1") Long categoryId, RedirectAttributes redirectAttributes) {
+    public String addGif(@RequestParam("file") MultipartFile file, @RequestParam(value = "categoryId", defaultValue = "1") Long categoryId,
+                         RedirectAttributes redirectAttributes) {
         if (file.getContentType().equals("image/gif")) {
             gifService.addGif(file, categoryId);
             redirectAttributes.addFlashAttribute("message",

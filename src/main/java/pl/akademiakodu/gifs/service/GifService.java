@@ -3,7 +3,6 @@ package pl.akademiakodu.gifs.service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.akademiakodu.gifs.model.Gif;
 
-import java.io.File;
 import java.util.List;
 
 public interface GifService {
